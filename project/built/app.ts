@@ -36,10 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 // utils
-function $(selector) {
+function $(selector: any) {
     return document.querySelector(selector);
 }
-function getUnixTimestamp(date) {
+function getUnixTimestamp(date: any) {
     return new Date(date).getTime();
 }
 // DOM
@@ -52,7 +52,8 @@ var deathsList = $('.deaths-list');
 var recoveredList = $('.recovered-list');
 var deathSpinner = createSpinnerElement('deaths-spinner');
 var recoveredSpinner = createSpinnerElement('recovered-spinner');
-function createSpinnerElement(id) {
+
+function createSpinnerElement(id: any) {
     var wrapperDiv = document.createElement('div');
     wrapperDiv.setAttribute('id', id);
     wrapperDiv.setAttribute('class', 'spinner-wrapper flex justify-center align-center');
@@ -136,7 +137,7 @@ function handleListClick(event) {
         });
     });
 }
-function setDeathsList(data) {
+function setDeathsList(data: any) {
     var sorted = data.sort(function (a, b) { return getUnixTimestamp(b.Date) - getUnixTimestamp(a.Date); });
     sorted.forEach(function (value) {
         var li = document.createElement('li');
@@ -157,7 +158,7 @@ function clearDeathList() {
 function setTotalDeathsByCountry(data) {
     deathsTotal.innerText = data[0].Cases;
 }
-function setRecoveredList(data) {
+function setRecoveredList(data: any) {
     var sorted = data.sort(function (a, b) { return getUnixTimestamp(b.Date) - getUnixTimestamp(a.Date); });
     sorted.forEach(function (value) {
         var li = document.createElement('li');
@@ -175,7 +176,7 @@ function setRecoveredList(data) {
 function clearRecoveredList() {
     recoveredList.innerHTML = null;
 }
-function setTotalRecoveredByCountry(data) {
+function setTotalRecoveredByCountry(data: any) {
     recoveredTotal.innerText = data[0].Cases;
 }
 function startLoadingAnimation() {
@@ -224,7 +225,7 @@ function renderChart(data, labels) {
         options: {},
     });
 }
-function setChartData(data) {
+function setChartData(data: any) {
     var chartData = data.slice(-14).map(function (value) { return value.Cases; });
     var chartLabel = data
         .slice(-14)
