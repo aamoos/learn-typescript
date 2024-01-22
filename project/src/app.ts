@@ -1,16 +1,20 @@
-//@ts-check
-
-
 // utils
-function $(selector : string) {
+// 라이브러리 로딩
+//import 변수명 from '라이브러리 이름'
+// 변수, 함수 임포트 문법
+//import {} from '파일 상대 경로';
+import axios from 'axios';
+import * as Chart from 'chart.js';
+
+function $(selector: string) {
   return document.querySelector(selector);
 }
-function getUnixTimestamp(date : Date) {
+function getUnixTimestamp(date: Date) {
   return new Date(date).getTime();
 }
 
 // DOM
-var a: Element | HTMLElement | HTMLParagraphElement
+//var a: Element | HTMLElement | HTMLParagraphElement
 const confirmedTotal = $('.confirmed-total') as HTMLSpanElement;
 const deathsTotal = $('.deaths') as HTMLParagraphElement;
 const recoveredTotal = $('.recovered') as HTMLParagraphElement;
@@ -21,7 +25,7 @@ const recoveredList = $('.recovered-list');
 const deathSpinner = createSpinnerElement('deaths-spinner');
 const recoveredSpinner = createSpinnerElement('recovered-spinner');
 
-function createSpinnerElement(id : any) {
+function createSpinnerElement(id: any) {
   const wrapperDiv = document.createElement('div');
   wrapperDiv.setAttribute('id', id);
   wrapperDiv.setAttribute(
@@ -38,7 +42,7 @@ function createSpinnerElement(id : any) {
 
 // state
 let isDeathLoading = false;
-let isRecoveredLoading = false;
+const isRecoveredLoading = false;
 
 /**
  * @typedef {object} CovidSummary
@@ -55,15 +59,15 @@ function fetchCovidSummary() {
 }
 fetchCovidSummary().then((res: any) => {
   console.log(res.Country);
-})
+});
 
 enum CovidStatus {
   Confirmed = 'confirmed',
-  Recovered =  'recovered',
-  Deaths = 'deaths'
+  Recovered = 'recovered',
+  Deaths = 'deaths',
 }
 
-function fetchCountryInfo(countryCode : string, status : CovidStatus) {
+function fetchCountryInfo(countryCode: string, status: CovidStatus) {
   // status params: confirmed, recovered, deaths
   const url = `https://api.covid19api.com/country/${countryCode}/status/${status}`;
   return axios.get(url);
@@ -80,7 +84,7 @@ function initEvents() {
   rankList.addEventListener('click', handleListClick);
 }
 
-async function handleListClick(event : any) {
+async function handleListClick(event: any) {
   let selectedId;
   if (
     event.target instanceof HTMLParagraphElement ||
@@ -98,7 +102,10 @@ async function handleListClick(event : any) {
   clearRecoveredList();
   startLoadingAnimation();
   isDeathLoading = true;
-  const { data: deathResponse } = await fetchCountryInfo(selectedId, CovidStatus.Deaths);
+  const { data: deathResponse } = await fetchCountryInfo(
+    selectedId,
+    CovidStatus.Deaths,
+  );
   const { data: recoveredResponse } = await fetchCountryInfo(
     selectedId,
     CovidStatus.Recovered,
@@ -116,7 +123,7 @@ async function handleListClick(event : any) {
   isDeathLoading = false;
 }
 
-function setDeathsList(data : any) {
+function setDeathsList(data: any) {
   const sorted = data.sort(
     (a: any, b: any) => getUnixTimestamp(b.Date) - getUnixTimestamp(a.Date),
   );
@@ -188,7 +195,7 @@ async function setupData() {
 }
 
 function renderChart(data: any, labels: any) {
-  var ctx = $('#lineChart').getContext('2d');
+  const ctx = $('#lineChart').getContext('2d');
   Chart.defaults.color = '#f5eaea';
   Chart.defaults.font.family = 'Exo 2';
   new Chart(ctx, {
