@@ -3,7 +3,7 @@
 //import 변수명 from '라이브러리 이름'
 // 변수, 함수 임포트 문법
 //import {} from '파일 상대 경로';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import * as Chart from 'chart.js';
 
 function $(selector: string) {
@@ -44,22 +44,22 @@ function createSpinnerElement(id: any) {
 let isDeathLoading = false;
 const isRecoveredLoading = false;
 
-/**
- * @typedef {object} CovidSummary
- * @property {Array<object>} Country
- */
+interface CovidSummaryResponse {
+  Countries: any[];
+  Date: string;
+  Global: object;
+  Message: string;
+} 
 
 // api
 /**
  * @returns {Promise<CovidSummary>}
  */
-function fetchCovidSummary() {
+function fetchCovidSummary(): Promise<AxiosResponse<CovidSummaryResponse>> {
   const url = 'https://api.covid19api.com/summary';
   return axios.get(url);
 }
-fetchCovidSummary().then((res: any) => {
-  console.log(res.Country);
-});
+fetchCovidSummary().then(res => res.data.)
 
 enum CovidStatus {
   Confirmed = 'confirmed',
